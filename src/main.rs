@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use anyhow::{Context, Result};
 use clap::Parser;
 use std::fs::File;
 use std::io::BufReader;
@@ -15,20 +16,20 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::parse();
 
-    // File hosts must exist in current path before this produces output
-    if let Ok(lines) = read_lines(&args.path) {
-        // Consumes the iterator, returns an (Optional) String
-        for line in lines {
-            if let Ok(ip) = line {
-                if ip.contains(&args.pattern) {
-                    println!("{}", ip);
-                }
-            }
+    let lines = read_lines(&args.path)
+        .with_context(|| format!("could not read file `{}`", &args.path.display()))?;
+
+    for line in lines {
+        let ip: String = line?;
+        if ip.contains(&args.pattern) {
+            println!("{}", ip);
         }
     }
+
+    Ok(())
 }
 
 // The output is wrapped in a Result to allow matching on errors
