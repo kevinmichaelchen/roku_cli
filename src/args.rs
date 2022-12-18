@@ -1,9 +1,9 @@
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
-#[clap(author, version, about)]
+#[command(author, version, about)]
 pub struct RokuArgs {
-    #[clap(subcommand)]
+    #[command(subcommand)]
     pub action_type: ActionType,
 }
 
@@ -22,7 +22,7 @@ pub struct DiscoverCommand {/* Empty for now, but could */}
 
 #[derive(Debug, Args)]
 pub struct KeyCommand {
-    #[clap(subcommand)]
+    #[command(subcommand)]
     pub key_type: KeyType,
 }
 

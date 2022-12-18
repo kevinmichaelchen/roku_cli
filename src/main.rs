@@ -5,5 +5,5 @@ use clap::Parser;
 
 fn main() {
     let args = RokuArgs::parse();
-    println!("{:?}", args);
+    println!("ARGSSSSS = {:?}", args);
 }
